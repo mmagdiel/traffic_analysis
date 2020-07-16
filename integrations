@@ -1,0 +1,67 @@
+
+import numpy as np
+import datetime
+
+import matplotlib.pyplot as plt
+from utils.helpers import *
+
+event_column_to_clean = {
+    'start_date': 'start',
+    'end_date': 'end'
+}
+
+def main():
+    # Import and  Read the files
+    event_raw = load_events_data()
+    event_raw = basic_transformation_for_events(event_raw)
+
+    for key, value in event_column_to_clean.items():
+        event_raw = clean_event_column(event_raw, key, value)
+
+    events = expand_datatime_events(event_raw, col_src_start='start', col_src_end='end', col_dist='datatime', freq='S')
+
+    events.to_csv('ev.csv')
+
+    users_raw = load_user_data()
+    users_raw = basic_transformation_for_users(users_raw)
+    users = clean_user_column(users_raw, 'date', 'datetime')
+
+    users.to_csv('us.csv')
+
+    ##join = pd.merge(left=users, right=events, how='inner', on=None, left_index=True, right_index=True)
+    join = users.join(events, how='inner')
+    join.index.rename('datetime')
+
+    join.to_csv('jo.csv')
+
+if __name__ == "__main__":
+    main()
+
+""""
+    ev['start'] = ev.apply(extract_datetime, axis=1, str='start_date')
+    ev['end'] = ev.apply(extract_datetime, axis=1, str='end_date')
+    del ev['start_date']
+    del ev['end_date']
+
+
+us.columns = us.columns.map(lambda column: column.lower())
+
+
+
+del us['keyword']
+temp = us.apply(lambda row: row['date'][:-4], axis=1)
+us['datetime'] = pd.to_datetime(temp)
+
+print(us.head())
+
+
+ev.external_event = ev.external_event.astype('category')
+
+
+def diff_time(row):
+    return pd.date_range(start=row['datetime'], end=row['end'], freq='S')
+    print(test)
+
+temp = ev.apply(diff_time, axis=1)
+
+"""

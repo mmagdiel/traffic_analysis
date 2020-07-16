@@ -1,0 +1,14 @@
+Fields,Type,Description
+clientID,String,GA Client Identification
+date,Timestamp,Date under  ISO8601 Format
+minute,Integer,minute of current time
+Keyword,String,"This could be display_keyword, site placement, boomuserlist, user_interest, age, or gender"
+sourceMedium,String,Combined values of ga:source and ga:medium
+Event_Name,String,User Action
+DeviceCategory,String,Mobile device model
+Country_Code,String,Users' country
+Hour,Integer,Event hour
+Channel,String,User Contact channel 
+Carrier,String,Mobile Carrier
+WIFI,Boolean,Wifi Status
+Operator,String,Mobile Operator
